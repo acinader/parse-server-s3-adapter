@@ -68,14 +68,13 @@ describe('S3Adapter tests', () => {
     });
 
     it('should accept options and overrides as args', () => {
-      var confObj = { bucketPrefix: 'test/', accessKey: 'key', bucket: 'bucket-1' };
-      var overridesObj = { secretKey: 'secret', params: { Bucket: 'bucket-2' }};
-      var args = [confObj, overridesObj];
-      var options = optionsFromArguments(args);
-      expect(options.accessKey).toEqual('key');
-      expect(options.secretKey).toEqual('secret');
-      expect(options.bucket).toEqual('bucket-2');
-      expect(options.bucketPrefix).toEqual('test/');
+      var confObj = { bucketPrefix: 'test/', bucket: 'bucket-1', secretKey: 'secret-1', accessKey: 'key-1' };
+      var overridesObj = { secretAccessKey: 'secret-2', accessKeyId: 'key-2', params: { Bucket: 'bucket-2' }};
+      var s3 = new S3Adapter(confObj, overridesObj);
+      expect(s3._s3Client.config.accessKeyId).toEqual('key-2');
+      expect(s3._s3Client.config.secretAccessKey).toEqual('secret-2');
+      expect(s3._s3Client.config.params.Bucket).toEqual('bucket-2');
+      expect(s3._bucketPrefix).toEqual('test/');
     });
   });
 

@@ -30,7 +30,11 @@ describe('S3Adapter tests', () => {
     }).not.toThrow()
 
     expect(() => {
-      var s3 = new S3Adapter({}, { params:{ Bucket: 'bucket'}});
+      var s3 = new S3Adapter({}, { params:{ bucket: 'bucket'}});
+    }).not.toThrow()
+
+    expect(() => {
+      var s3 = new S3Adapter({bucket: 'bucket'}, { params:{ ACL: 'boo'}});
     }).not.toThrow()
   });
 

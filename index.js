@@ -5,6 +5,7 @@
 
 var AWS = require('aws-sdk');
 var optionsFromArguments = require('./lib/optionsFromArguments');
+var _ = require('lodash');
 
 // Creates an S3 session.
 // Providing AWS access, secret keys and bucket are mandatory
@@ -34,7 +35,8 @@ function S3Adapter() {
     s3Options.secretAccessKey = options.secretKey;
   }
 
-  Object.assign(s3Options, options.s3overrides);
+ // Object.assign(s3Options, options.s3overrides);
+  _.merge(s3Options, options.s3overrides);
 
   this._s3Client = new AWS.S3(s3Options);
   this._hasBucket = false;

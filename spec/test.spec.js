@@ -9,7 +9,7 @@ describe('S3Adapter tests', () => {
   it('should throw when not initialized properly', () => {
     expect(() => {
       var s3 = new S3Adapter();
-    }).toThrow("S3Adapter requires option 'bucket' or env. variable S3_BUCKET")
+    }).toThrow('Failed to configure S3Adapter. Arguments don\'t make sense')
 
     expect(() =>  {
       var s3 = new S3Adapter('accessKey', 'secretKey', {});
@@ -27,6 +27,10 @@ describe('S3Adapter tests', () => {
 
     expect(() => {
       var s3 = new S3Adapter({ bucket: 'bucket'});
+    }).not.toThrow()
+
+    expect(() => {
+      var s3 = new S3Adapter({}, { params:{ Bucket: 'bucket'}});
     }).not.toThrow()
   });
 
@@ -60,6 +64,17 @@ describe('S3Adapter tests', () => {
       expect(options.accessKey).toEqual('key');
       expect(options.secretKey).toEqual('secret');
       expect(options.bucket).toEqual('bucket');
+      expect(options.bucketPrefix).toEqual('test/');
+    });
+
+    it('should accept options and overrides as args', () => {
+      var confObj = { bucketPrefix: 'test/', accessKey: 'key', bucket: 'bucket-1' };
+      var overridesObj = { secretKey: 'secret', params: { Bucket: 'bucket-2' }};
+      var args = [confObj, overridesObj];
+      var options = optionsFromArguments(args);
+      expect(options.accessKey).toEqual('key');
+      expect(options.secretKey).toEqual('secret');
+      expect(options.bucket).toEqual('bucket-2');
       expect(options.bucketPrefix).toEqual('test/');
     });
   });

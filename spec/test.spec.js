@@ -9,7 +9,7 @@ describe('S3Adapter tests', () => {
   it('should throw when not initialized properly', () => {
     expect(() => {
       var s3 = new S3Adapter();
-    }).toThrow('Failed to configure S3Adapter. Arguments don\'t make sense')
+    }).toThrow(new Error('Failed to configure S3Adapter. Arguments don\'t make sense'));
 
     expect(() =>  {
       var s3 = new S3Adapter('accessKey', 'secretKey', {});
